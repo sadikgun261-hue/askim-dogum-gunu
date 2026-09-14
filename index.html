@@ -58,7 +58,7 @@ const CONFIG = {
     FINAL_MESSAGE: "Sevgilim,\n\nBu küçük sürprizi senin için yaptım. İçindeki her mesaj, her fotoğraf, her kalp hepsi senin için. Sen de benim hayatıma giren en güzel sürprizsin. Doğum günün kutlu olsun. Seni seviyorum, bugün dünden çok, yarın bugünden daha da çok.\n\nHer zaman yanında,\n Sadikin",
 
     // ✏️ Doğum günü tarihi (geri sayım için) — YYYY-AA-GGTHH:MM:SS formatında
-    BIRTHDAY_DATE: "2026-09-15T00:00:00",
+    BIRTHDAY_DATE: "2020-01-01T00:00:00",
 
     // ✏️ Arka plan müziği — birden fazla YouTube şarkı linki ekle
     // Şarkılar sırayla çalar, bitince başa döner
@@ -231,8 +231,20 @@ const CONFIG = {
         <p class="surprise-name" id="surpriseName">Aşkım</p>
         <p class="surprise-subtitle">Hayatımın en güzel sürprizi</p>
 
-        <!-- Animasyonlu pasta -->
-        <div class="cake-container" id="cakeContainer">
+        <!-- İki sürpriz kutusu -->
+        <div class="surprise-boxes" id="surpriseBoxes">
+            <button class="surprise-box" id="surpriseBox1" aria-label="Birinci kutu">
+                <span class="surprise-box-icon">🎂</span>
+                <span class="surprise-box-label">1. Kutu</span>
+            </button>
+            <button class="surprise-box" id="surpriseBox2" aria-label="İkinci kutu">
+                <span class="surprise-box-icon">💋</span>
+                <span class="surprise-box-label">2. Kutu</span>
+            </button>
+        </div>
+
+        <!-- Animasyonlu pasta (kutu 1 açılınca görünür) -->
+        <div class="cake-container" id="cakeContainer" style="display:none">
             <div class="cake">
                 <div class="cake-plate"></div>
                 <div class="cake-layer cake-layer-bottom"></div>
@@ -243,7 +255,13 @@ const CONFIG = {
                 </div>
             </div>
         </div>
-        <p class="cake-hint" id="cakeHint">Pastanın mumunu üflemek için dokun</p>
+        <p class="cake-hint" id="cakeHint" style="display:none">Mumu söndürmek için ekranın herhangi bir yerine dokun</p>
+
+        <!-- Öpücük mesajı (kutu 2 açılınca görünür) -->
+        <div class="kiss-message" id="kissMessage" style="display:none">
+            <div class="kiss-message-icon">💋💋💋</div>
+            <p class="kiss-message-text">Bu kutuya birçok öpücük koydum,<br>şimdi onlar senin</p>
+        </div>
 
         <!-- Fotoğraf slayt gösterisi -->
         <div class="slideshow-container" id="slideshowContainer" style="display:none">
