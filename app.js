@@ -58,7 +58,8 @@
     setInterval(createFloatingHeart, 2000);
 
     // ===== GERİ SAYIM =====
-    const birthday = new Date(C.BIRTHDAY_DATE + 'T00:00:00').getTime();
+    const birthday = new Date(C.BIRTHDAY_DATE).getTime();
+    let surpriseTriggered = false;
 
     function updateCountdown() {
         const now = new Date().getTime();
@@ -69,6 +70,11 @@
             document.getElementById('cdHours').textContent = '0';
             document.getElementById('cdMins').textContent = '0';
             document.getElementById('cdSecs').textContent = '0';
+            // Sürprizi tetikle
+            if (!surpriseTriggered) {
+                surpriseTriggered = true;
+                triggerBirthdaySurprise();
+            }
             return;
         }
 
@@ -396,5 +402,143 @@
         el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
         observer.observe(el);
     });
+
+    // ===== DOĞUM GÜNÜ SÜRPRİZİ =====
+    function triggerBirthdaySurprise() {
+        const surprise = document.getElementById('birthdaySurprise');
+        const surpriseName = document.getElementById('surpriseName');
+        surpriseName.textContent = C.PARTNER_NAME || 'Aşkım';
+        surprise.classList.add('active');
+
+        // Konfetiyi başlat
+        startConfetti();
+
+        // Pasta'ya tıklama — mumu üflet
+        const cakeContainer = document.getElementById('cakeContainer');
+        const candleFlame = document.getElementById('candleFlame');
+        const cakeHint = document.getElementById('cakeHint');
+        const slideshowContainer = document.getElementById('slideshowContainer');
+        const surpriseClose = document.getElementById('surpriseClose');
+        let candleBlown = false;
+
+        cakeContainer.addEventListener('click', function () {
+            if (candleBlown) return;
+            candleBlown = true;
+            candleFlame.classList.add('out');
+            cakeHint.textContent = 'Dilek tut! 🌟';
+
+            // 2 saniye sonra slayt gösterisini başlat
+            setTimeout(function () {
+                cakeHint.style.display = 'none';
+                slideshowContainer.style.display = 'block';
+                startSlideshow();
+            }, 2000);
+
+            // 4 saniye sonra kapat butonunu göster
+            setTimeout(function () {
+                surpriseClose.style.display = 'inline-block';
+            }, 4000);
+        });
+
+        // Sürpriz ekranını kapat
+        surpriseClose.addEventListener('click', function () {
+            surprise.classList.remove('active');
+            stopConfetti();
+        });
+    }
+
+    // ===== KONFETİ ANİMASYONU =====
+    let confettiCtx = null;
+    let confettiAnimId = null;
+    let confettiParticles = [];
+
+    function startConfetti() {
+        const canvas = document.getElementById('confettiCanvas');
+        canvas.classList.add('active');
+        confettiCtx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const colors = ['#e8586f', '#c9355a', '#f4a0b0', '#ffd700', '#ff8c00', '#ffffff', '#d4708a'];
+
+        for (let i = 0; i < 80; i++) {
+            confettiParticles.push({
+                x: Math.random() * canvas.width,
+                y: -20 - Math.random() * 100,
+                w: 8 + Math.random() * 8,
+                h: 6 + Math.random() * 6,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                vx: (Math.random() - 0.5) * 4,
+                vy: 2 + Math.random() * 4,
+                rot: Math.random() * 360,
+                vrot: (Math.random() - 0.5) * 10,
+            });
+        }
+
+        animateConfetti();
+    }
+
+    function animateConfetti() {
+        if (!confettiCtx) return;
+        const canvas = confettiCtx.canvas;
+        confettiCtx.clearRect(0, 0, canvas.width, canvas.height);
+
+        confettiParticles.forEach(function (p) {
+            p.x += p.vx;
+            p.y += p.vy;
+            p.rot += p.vrot;
+
+            if (p.y > canvas.height + 20) {
+                p.y = -20;
+                p.x = Math.random() * canvas.width;
+            }
+
+            confettiCtx.save();
+            confettiCtx.translate(p.x, p.y);
+            confettiCtx.rotate((p.rot * Math.PI) / 180);
+            confettiCtx.fillStyle = p.color;
+            confettiCtx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+            confettiCtx.restore();
+        });
+
+        confettiAnimId = requestAnimationFrame(animateConfetti);
+    }
+
+    function stopConfetti() {
+        if (confettiAnimId) cancelAnimationFrame(confettiAnimId);
+        confettiAnimId = null;
+        confettiParticles = [];
+        const canvas = document.getElementById('confettiCanvas');
+        if (canvas) {
+            canvas.classList.remove('active');
+            if (confettiCtx) confettiCtx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+    }
+
+    // ===== SLAYT GÖSTERİSİ =====
+    function startSlideshow() {
+        const slideshowImg = document.getElementById('slideshowImg');
+        const slideshowCaption = document.getElementById('slideshowCaption');
+        const photos = C.PHOTOS || [];
+        if (photos.length === 0) return;
+
+        let currentIdx = 0;
+
+        function showPhoto() {
+            const photo = photos[currentIdx];
+            slideshowImg.src = photo.url;
+            slideshowCaption.textContent = photo.caption || '';
+            // Animasyonu yeniden tetikle
+            slideshowImg.style.animation = 'none';
+            void slideshowImg.offsetWidth; // reflow
+            slideshowImg.style.animation = 'slideFade 0.8s ease-out';
+        }
+
+        showPhoto();
+        setInterval(function () {
+            currentIdx = (currentIdx + 1) % photos.length;
+            showPhoto();
+        }, 3500);
+    }
 
 })();
