@@ -310,7 +310,8 @@
         let box2Opened = false;
 
         // 1. KUTU — Konfeti + Pasta + Mum
-        surpriseBox1.addEventListener('click', function () {
+        surpriseBox1.addEventListener('click', function (e) {
+            e.stopPropagation();
             if (box1Opened) return;
             box1Opened = true;
             surpriseBox1.classList.add('opened');
@@ -348,7 +349,8 @@
         });
 
         // 2. KUTU — Öpücük mesajı + uçuşan öpücükler
-        surpriseBox2.addEventListener('click', function () {
+        surpriseBox2.addEventListener('click', function (e) {
+            e.stopPropagation();
             if (box2Opened) return;
             box2Opened = true;
             surpriseBox2.classList.add('opened');
@@ -361,7 +363,8 @@
         });
 
         // Sürpriz ekranını kapat
-        surpriseClose.addEventListener('click', function () {
+        surpriseClose.addEventListener('click', function (e) {
+            e.stopPropagation();
             surprise.classList.remove('active');
             stopConfetti();
         });
