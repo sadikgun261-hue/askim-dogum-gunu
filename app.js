@@ -11,6 +11,12 @@
 (function () {
     const C = CONFIG;
 
+    // Konfeti değişkenleri — en başta tanımlanır ki geri sayım hemen sıfırlanırsa
+    // triggerBirthdaySurprise -> startConfetti çağrısında TDZ hatası olmasın
+    let confettiCtx = null;
+    let confettiAnimId = null;
+    let confettiParticles = [];
+
     // ===== HERO: İsim göster =====
     document.getElementById('partnerName').textContent = C.PARTNER_NAME;
 
@@ -537,9 +543,6 @@
     }
 
     // ===== KONFETİ ANİMASYONU =====
-    let confettiCtx = null;
-    let confettiAnimId = null;
-    let confettiParticles = [];
 
     function startConfetti() {
         const canvas = document.getElementById('confettiCanvas');
