@@ -1020,6 +1020,104 @@ p { text-wrap: pretty; }
     margin-top: var(--space-2);
 }
 
+/* ===== SÜRPRİZ KUTULARI ===== */
+.surprise-boxes {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-6);
+    margin: var(--space-8) 0;
+    flex-wrap: wrap;
+}
+
+.surprise-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-6) var(--space-8);
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    transition: all var(--transition);
+    backdrop-filter: blur(10px);
+    min-width: 130px;
+}
+
+.surprise-box:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: #fff;
+    transform: translateY(-4px);
+}
+
+.surprise-box.opened {
+    opacity: 0.4;
+    pointer-events: none;
+    transform: scale(0.9);
+}
+
+.surprise-box-icon {
+    font-size: 2.5rem;
+    animation: boxBounce 2s ease-in-out infinite;
+}
+
+@keyframes boxBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+}
+
+.surprise-box-label {
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    color: rgba(255, 255, 255, 0.85);
+}
+
+/* ===== ÖPÜCÜK MESAJI ===== */
+.kiss-message {
+    margin: var(--space-6) auto;
+    max-width: 400px;
+    padding: var(--space-6);
+    animation: kissPop 0.6s ease-out;
+}
+
+@keyframes kissPop {
+    from { opacity: 0; transform: scale(0.7); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.kiss-message-icon {
+    font-size: 2.5rem;
+    margin-bottom: var(--space-3);
+    animation: kissFloat 1.5s ease-in-out infinite;
+}
+
+@keyframes kissFloat {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-8px) rotate(5deg); }
+}
+
+.kiss-message-text {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    color: #fff;
+    line-height: 1.5;
+    font-style: italic;
+}
+
+/* Uçuşan öpücükler */
+.flying-kiss {
+    position: fixed;
+    font-size: 1.5rem;
+    pointer-events: none;
+    z-index: 9999;
+    animation: flyUp 2.5s ease-out forwards;
+}
+
+@keyframes flyUp {
+    0% { transform: translateY(0) scale(0.5) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(-400px) scale(1.2) rotate(20deg); opacity: 0; }
+}
+
 /* ===== SLAYT GÖSTERİSİ ===== */
 .slideshow-container {
     margin: var(--space-6) auto;
