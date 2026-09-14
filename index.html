@@ -57,8 +57,8 @@ const CONFIG = {
     // ✏️ Son ekrandaki özel mektup
     FINAL_MESSAGE: "Sevgilim,\n\nBu küçük sürprizi senin için yaptım. İçindeki her mesaj, her fotoğraf, her kalp hepsi senin için. Sen de benim hayatıma giren en güzel sürprizsin. Doğum günün kutlu olsun. Seni seviyorum, bugün dünden çok, yarın bugünden daha da çok.\n\nHer zaman yanında,\n Sadikin",
 
-    // ✏️ Doğum günü tarihi (geri sayım için) — YYYY-AA-GG formatında
-    BIRTHDAY_DATE: "2026-09-15",
+    // ✏️ Doğum günü tarihi (geri sayım için) — YYYY-AA-GGTHH:MM:SS formatında
+    BIRTHDAY_DATE: "2026-09-15T12:00:00",
 
     // ✏️ Arka plan müziği — birden fazla YouTube şarkı linki ekle
     // Şarkılar sırayla çalar, bitince başa döner
@@ -221,6 +221,42 @@ const CONFIG = {
 </div>
 
 <!-- ===== MÜZİK ÇALAR (kaldırıldı) ===== -->
+
+<!-- ===== DOĞUM GÜNÜ SÜRPRİZ EKRANI ===== -->
+<div class="birthday-surprise" id="birthdaySurprise">
+    <div class="surprise-overlay"></div>
+    <div class="surprise-content">
+        <div class="surprise-emoji" id="surpriseEmoji">🎉</div>
+        <h1 class="surprise-title">DOĞUM GÜNÜN KUTLU OLSUN</h1>
+        <p class="surprise-name" id="surpriseName">Aşkım</p>
+        <p class="surprise-subtitle">Hayatımın en güzel sürprizi</p>
+
+        <!-- Animasyonlu pasta -->
+        <div class="cake-container" id="cakeContainer">
+            <div class="cake">
+                <div class="cake-plate"></div>
+                <div class="cake-layer cake-layer-bottom"></div>
+                <div class="cake-layer cake-layer-middle"></div>
+                <div class="cake-layer cake-layer-top"></div>
+                <div class="cake-candle" id="cakeCandle">
+                    <div class="candle-flame" id="candleFlame"></div>
+                </div>
+            </div>
+        </div>
+        <p class="cake-hint" id="cakeHint">Pastanın mumunu üflemek için dokun</p>
+
+        <!-- Fotoğraf slayt gösterisi -->
+        <div class="slideshow-container" id="slideshowContainer" style="display:none">
+            <img class="slideshow-img" id="slideshowImg" src="" alt="">
+            <p class="slideshow-caption" id="slideshowCaption"></p>
+        </div>
+
+        <button class="surprise-close" id="surpriseClose" style="display:none">Hediyelere Göz At</button>
+    </div>
+</div>
+
+<!-- Konfeti tuvali -->
+<canvas class="confetti-canvas" id="confettiCanvas"></canvas>
 
 <script src="app.js"></script>
 <script data-pplx-inline-edit>
