@@ -413,16 +413,39 @@
         // Konfetiyi başlat
         startConfetti();
 
-        // Pasta'ya tıklama — mumu üflet
         const cakeContainer = document.getElementById('cakeContainer');
         const candleFlame = document.getElementById('candleFlame');
         const cakeHint = document.getElementById('cakeHint');
         const slideshowContainer = document.getElementById('slideshowContainer');
         const surpriseClose = document.getElementById('surpriseClose');
+        const surpriseBox1 = document.getElementById('surpriseBox1');
+        const surpriseBox2 = document.getElementById('surpriseBox2');
+        const kissMessage = document.getElementById('kissMessage');
         let candleBlown = false;
+        let box1Opened = false;
+        let box2Opened = false;
 
-        cakeContainer.addEventListener('click', function () {
+        // 1. KUTU — Konfeti + Pasta + Mum
+        surpriseBox1.addEventListener('click', function () {
+            if (box1Opened) return;
+            box1Opened = true;
+            surpriseBox1.classList.add('opened');
+
+            // Konfeti patlaması
+            burstConfetti();
+
+            // Pastayı göster
+            cakeContainer.style.display = 'flex';
+            cakeHint.style.display = 'block';
+        });
+
+        // Herhangi bir yere dokununca mum sönsün
+        document.addEventListener('click', function (e) {
             if (candleBlown) return;
+            if (!box1Opened) return;
+            // Sürpriz ekranı aktif mi kontrol et
+            if (!surprise.classList.contains('active')) return;
+
             candleBlown = true;
             candleFlame.classList.add('out');
             cakeHint.textContent = 'Dilek tut! 🌟';
@@ -440,11 +463,77 @@
             }, 4000);
         });
 
+        // 2. KUTU — Öpücük mesajı + uçuşan öpücükler
+        surpriseBox2.addEventListener('click', function () {
+            if (box2Opened) return;
+            box2Opened = true;
+            surpriseBox2.classList.add('opened');
+
+            // Öpücük mesajını göster
+            kissMessage.style.display = 'block';
+
+            // Uçuşan öpücükler başlat
+            startFlyingKisses();
+        });
+
         // Sürpriz ekranını kapat
         surpriseClose.addEventListener('click', function () {
             surprise.classList.remove('active');
             stopConfetti();
         });
+    }
+
+    // ===== KONFETİ PATLAMASI (tek seferlik) =====
+    function burstConfetti() {
+        const canvas = document.getElementById('confettiCanvas');
+        if (!canvas.classList.contains('active')) {
+            startConfetti();
+        }
+        // Ek konfeti patlat
+        const colors = ['#e8586f', '#c9355a', '#f4a0b0', '#ffd700', '#ff8c00', '#ffffff', '#d4708a'];
+        for (let i = 0; i < 50; i++) {
+            confettiParticles.push({
+                x: Math.random() * (canvas.width || window.innerWidth),
+                y: -20,
+                w: 8 + Math.random() * 8,
+                h: 6 + Math.random() * 6,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                vx: (Math.random() - 0.5) * 8,
+                vy: 2 + Math.random() * 6,
+                rot: Math.random() * 360,
+                vrot: (Math.random() - 0.5) * 15,
+            });
+        }
+    }
+
+    // ===== UÇUŞAN ÖPÜCÜKLER =====
+    function startFlyingKisses() {
+        const kissEmojis = ['💋', '😘', '💕', '💖', '💞'];
+        let kissCount = 0;
+        const maxKisses = 25;
+
+        function spawnKiss() {
+            if (kissCount >= maxKisses) return;
+            kissCount++;
+
+            const kiss = document.createElement('div');
+            kiss.className = 'flying-kiss';
+            kiss.textContent = kissEmojis[Math.floor(Math.random() * kissEmojis.length)];
+            kiss.style.left = (10 + Math.random() * 80) + '%';
+            kiss.style.bottom = '10%';
+            kiss.style.fontSize = (1.2 + Math.random() * 1.5) + 'rem';
+            document.body.appendChild(kiss);
+
+            setTimeout(function () {
+                kiss.remove();
+            }, 2500);
+
+            if (kissCount < maxKisses) {
+                setTimeout(spawnKiss, 150 + Math.random() * 200);
+            }
+        }
+
+        spawnKiss();
     }
 
     // ===== KONFETİ ANİMASYONU =====
